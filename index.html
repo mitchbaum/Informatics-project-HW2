@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS3910 HW2: Wordle clone</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js"></script>
+  </head>
+  
+  <body>
+    <div id="game">
+      <div id="game-title">
+          WORDLE
+      </div>
+      <div id="board-container">
+        <div id="board">
+            <div class="square" id = 0></div>	  
+            <div class="square" id = 1></div>
+            <div class="square" id = 2></div>
+            <div class="square" id = 3></div>
+            <div class="square" id = 4></div>
+            <div class="square" id = 5></div>
+            <div class="square" id = 6></div>
+            <div class="square" id = 7></div>
+            <div class="square" id = 8></div>
+            <div class="square" id = 9></div>	  	    
+            <div class="square" id = 10></div>
+            <div class="square" id = 11></div>
+            <div class="square" id = 12></div>
+            <div class="square" id = 13></div>
+            <div class="square" id = 14></div>
+            <div class="square" id = 15></div>		  	    
+            <div class="square" id = 16></div>		  	    
+            <div class="square" id = 17></div>
+            <div class="square" id = 18></div>
+            <div class="square" id = 19></div>		  	    
+            <div class="square" id = 20></div>
+            <div class="square" id = 21></div>
+            <div class="square" id = 22></div>
+            <div class="square" id = 23></div>
+            <div class="square" id = 24></div>		  	    
+            <div class="square" id = 25></div>
+            <div class="square" id = 26></div>
+            <div class="square" id = 27></div>
+            <div class="square" id = 28></div>
+            <div class="square" id = 29></div>
+        </div>
+      </div>
+
+      <div id="keyboard-container">
+        <div class="keyboard-row" id="top">
+            <button>q</button>
+            <button>w</button>
+            <button>e</button>
+            <button>r</button>
+            <button>t</button>
+            <button>y</button>
+            <button>u</button>
+            <button>i</button>
+            <button>o</button>
+            <button>p</button>
+        </div>
+        <div class="keyboard-row" id="middle">
+            <button>a</button>
+            <button>s</button>
+            <button>d</button>
+            <button>f</button>
+            <button>g</button>
+            <button>h</button>
+            <button>j</button>
+            <button>k</button>
+            <button>l</button>
+        </div>
+        <div class="keyboard-row" id="bottom">
+            <button id="submit">Submit</button>	  
+            <button>z</button>
+            <button>x</button>
+            <button>c</button>
+            <button>v</button>
+            <button>b</button>
+            <button>n</button>
+            <button>m</button>
+            <button id="delete">Del</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+         document.addEventListener("DOMContentLoaded", () => {
+
+        /* array containing arrays of the letters guessed so far.*/
+        let guessedLetters = [[], [], [], [], [], []];
+
+        /* The index (0-29) of the current/next square to be filled */
+        let indexOfSquareToFill = 0;
+
+        /* The number of fully guessed words so far. */
+        let guessedWordCount = 0;
+
+        /* The html elements for all the keyboard keys. */
+        const keys = document.querySelectorAll(".keyboard-row button");
+
+        let mostRecentGuess = "No guesses have been made!";
+        let wordToGuess = "There is no word to guess yet.";
+
+        function getCurrentWordArray() {
+        return guessedLetters[guessedWordCount];
+        }
+
+        function updateGuessedLetters(letter) {
+        const currentWordArray = getCurrentWordArray();
+        if (currentWordArray.length < 5) {
+            currentWordArray.push(letter);
+            const currentSquareElement = document.getElementById(String(indexOfSquareToFill));
+            currentSquareElement.textContent = letter;
+            indexOfSquareToFill += 1;
+        }
+        }
+
+        function handleSubmitWord() {
+        const currentWordArray = getCurrentWordArray();
+        if (currentWordArray.length !== 5) {
+            window.alert("You must enter 5 letters before submitting!");
+        } else {
+            mostRecentGuess = currentWordArray.join("");
+            window.alert(`You guessed '${mostRecentGuess}'`);
+            guessedWordCount += 1;
+        } 
+        }
+
+        for (let i = 0; i < keys.length; i++) {
+        keys[i].onclick = (event) => {
+            if (guessedWordCount === 6) {
+            window.alert(`Sorry, you have no more guesses! The word is ${wordToGuess}.`);
+            return;
+            } 
+            const keyValue = event.target.textContent;
+            if (keyValue === "Submit") {
+            handleSubmitWord();
+            return;
+            }
+            if (keyValue === "Del") {
+            return;
+            }
+            updateGuessedLetters(keyValue);
+        };
+        }
+        });
+  </script>
+</html>
